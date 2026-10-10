@@ -5,7 +5,7 @@ import mongoose from "mongoose"
 
 type Role = "admin" | "viewer" | "responder";
 
-export async function createMemberShip(
+export async function CreateMemberShip(
     userId: mongoose.Types.ObjectId,
     organizationId: mongoose.Types.ObjectId,
     role: Role,

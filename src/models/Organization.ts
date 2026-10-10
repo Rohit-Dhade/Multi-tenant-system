@@ -23,11 +23,10 @@ const OrganizationSchema = new mongoose.Schema<IOrganization>({
     },
 }, { timestamps: true });
 
-OrganizationSchema.pre("save", function () {
-    if (this.isModified("name")) {
+OrganizationSchema.pre("validate", function () {
+    if (this.isNew || this.isModified("name")) {
         this.slug = makeSlug(this.name);
     }
-    // next();
 });
 
 export const OrganizationModel = mongoose.model<IOrganization>(
