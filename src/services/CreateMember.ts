@@ -2,8 +2,7 @@ import type { ClientSession } from "mongoose"
 import { MemberShipModel } from "../models/MembershipModel.ts";
 import { ApiError } from "./ApiError.ts";
 import mongoose from "mongoose"
-
-type Role = "admin" | "viewer" | "responder";
+import type { Role } from "../types/role.ts";
 
 export async function CreateMemberShip(
     userId: mongoose.Types.ObjectId,

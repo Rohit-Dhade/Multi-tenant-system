@@ -1,9 +1,10 @@
 import mongoose, { type Document } from "mongoose";
+import type { Role } from "../types/role.ts";
 
 export interface IMembership extends Document {
     userId: mongoose.Types.ObjectId;
     organizationId: mongoose.Types.ObjectId;
-    role: "admin" | "viewer" | "responder"
+    role: Role;
 }
 
 const MembershipSchema = new mongoose.Schema<IMembership>({

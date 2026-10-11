@@ -4,6 +4,7 @@ import express from 'express';
 import { errorHandler } from './middleware/ErrorMiddleware.ts';
 import registerRouter from "./routes/AuthRoutes.ts";
 import requiredRoleRouter from './routes/requiredRoleRoute.ts';
+import incidentRouter from "./routes/incidentstatus.routes.ts";
 
 const app = express();
 app.use(express.json({ limit: "10kb" }));
@@ -12,6 +13,7 @@ app.use(cookieParser());
 
 app.use("/api/v1/auth", registerRouter);
 app.use("/api/v1/role", requiredRoleRouter);
+app.use("/api/v1/incident", incidentRouter);
 app.use(errorHandler);
 
 export default app;
