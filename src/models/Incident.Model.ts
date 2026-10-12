@@ -3,7 +3,7 @@ import { INCIDENT_STATUSES, INCIDENT_SEVERITIES, type IncidentStatus, type Incid
 
 export interface IIncident extends Document {
     title: string;
-    description: string;
+    description?: string;
     organizationId: mongoose.Types.ObjectId;
     serviceId: mongoose.Types.ObjectId;
     status: IncidentStatus;

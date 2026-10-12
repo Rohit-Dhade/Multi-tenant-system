@@ -1,20 +1,25 @@
 import mongoose, { type HydratedDocument } from "mongoose";
 import { IncidentModel, type IIncident } from "../models/Incident.Model.ts";
 import { ServiceModel } from "../models/Service.Model.ts";
+import { IncidentUpdateModel } from "../models/IncidentUpdate.Model.ts";
 import { ApiError } from "./ApiError.ts";
-import { canTransition } from "../services/IncidentStateMachines.ts";
+import { canTransition } from "./IncidentStateMachines.ts";
 import type { IncidentStatus } from "../types/incident.types.ts";
 
 interface ChangeIncidentStatusInput {
     incidentId: string;
     newStatus: IncidentStatus;
     organizationId: string;
+    userId: string;
+    note?: string;
 }
 
 export async function changeIncidentStatus({
     incidentId,
     newStatus,
     organizationId,
+    userId,
+    note
 }: ChangeIncidentStatusInput): Promise<HydratedDocument<IIncident>> {
     if (!mongoose.isValidObjectId(incidentId)) {
         throw new ApiError(404, "Incident not found");
@@ -66,6 +71,20 @@ export async function changeIncidentStatus({
 
             updated = result;
 
+            await IncidentUpdateModel.create(
+                [
+                    {
+                        incidentId: incident._id,
+                        organizationId,
+                        authorId: userId,
+                        type: "status_change",
+                        fromStatus: from,
+                        toStatus: newStatus,
+                        message: note?.trim() || `Status changed from ${from} to ${newStatus}`,
+                    },
+                ],
+                { session }
+            );
 
             if (newStatus === "resolved") {
 
