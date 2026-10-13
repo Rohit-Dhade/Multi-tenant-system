@@ -14,6 +14,7 @@ export interface IIncidentUpdate extends Document {
     type: UpdateType;
     message: string;
     visibility: UpdateVisibility;
+    targetUserId?: mongoose.Types.ObjectId;
     fromStatus?: IncidentStatus;
     toStatus?: IncidentStatus;
 }
@@ -28,6 +29,7 @@ const IncidentUpdateSchema = new mongoose.Schema<IIncidentUpdate>(
         visibility: { type: String, enum: UPDATE_VISIBILITIES, default: "internal" },
         fromStatus: { type: String, enum: INCIDENT_STATUSES },
         toStatus: { type: String, enum: INCIDENT_STATUSES },
+        targetUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
     { timestamps: true }
 );
